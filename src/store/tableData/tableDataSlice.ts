@@ -20,7 +20,7 @@ const tableDataSlice = createSlice({
       const index = state.items.findIndex((i) => i.id === action.payload.id);
       if (index !== -1) state.items[index] = action.payload;
     },
-    deleteItem: (state, action: PayloadAction<number>) => {
+    deleteItem: (state, action: PayloadAction<number | string>) => {
       state.items = state.items.filter((i) => i.id !== action.payload);
     },
   },

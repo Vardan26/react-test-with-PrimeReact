@@ -21,7 +21,7 @@ export const useTableData = () => {
   }, [data, dispatch]);
 
   const handleUpdate = (item: Item) => dispatch(updateItem(item));
-  const handleDelete = (id: number) => dispatch(deleteItem(id));
+  const handleDelete = (id: number | string) => dispatch(deleteItem(id));
 
   return {
     items,
