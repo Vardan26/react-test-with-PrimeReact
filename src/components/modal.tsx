@@ -1,4 +1,3 @@
-import React from "react";
 import { Controller } from "react-hook-form";
 
 import { Dialog } from "primereact/dialog";
@@ -17,21 +16,21 @@ type Props = {
   options: string[];
 };
 
-const EditModal = ({
-  visible,
-  onRequestClose,
-  item,
-  onSave,
-  options,
-}: Props) => {
+const Modal = ({ visible, onRequestClose, item, onSave, options }: Props) => {
   const { control, submitHandler, isChanged, isValid } = useEditForm({
     selectedItem: item,
     onSave,
   });
 
   return (
-    <Dialog header="Edit Item" visible={visible} onHide={onRequestClose} modal>
-      <form onSubmit={submitHandler} className="p-fluid">
+    <Dialog
+      header="Edit Item"
+      visible={visible}
+      onHide={onRequestClose}
+      modal
+      className="w-[500px] max-w-[90vw]"
+    >
+      <form onSubmit={submitHandler} className="p-fluid gap-5 flex flex-col">
         <div className="p-field">
           <label htmlFor="n">Name</label>
           <Controller
@@ -77,16 +76,16 @@ const EditModal = ({
 
         <div className="flex gap-2 mt-2">
           <Button
-            label="Cancel"
-            type="button"
-            onClick={onRequestClose}
-            className="p-button-secondary"
-          />
-          <Button
             label="Save"
             type="submit"
             className="p-button-primary"
             disabled={!isChanged || !isValid}
+          />
+          <Button
+            label="Cancel"
+            type="button"
+            onClick={onRequestClose}
+            className="p-button-secondary"
           />
         </div>
       </form>
@@ -94,4 +93,4 @@ const EditModal = ({
   );
 };
 
-export default EditModal;
+export default Modal;

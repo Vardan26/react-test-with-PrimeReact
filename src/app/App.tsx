@@ -1,12 +1,14 @@
-import TableComponent from "../components/table";
-import { useTableData } from "../hooks";
+import Table from "../components/table";
+import { useTableData } from "../hooks/tableData";
+import AppLayout from "./AppLayout";
 
 export const App = () => {
-  const { items, isLoading, updateItem, deleteItem } = useTableData();
+  const { isLoading } = useTableData();
 
-  if (isLoading) return <div>Loading...</div>;
   return (
-    <TableComponent data={items} onEdit={updateItem} onDelete={deleteItem} />
+    <AppLayout loading={isLoading}>
+      <Table />
+    </AppLayout>
   );
 };
 

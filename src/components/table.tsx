@@ -4,25 +4,40 @@ import { Column } from "primereact/column";
 import { Button } from "primereact/button";
 
 import type { Item } from "../types";
-import EditModal from "./modal";
+import Modal from "./modal";
+import { useTableData } from "../hooks/tableData";
 
-type Props = {
-  data: Item[];
-  onEdit: (item: Item) => void;
-  onDelete: (id: number | string) => void;
-};
+const Table = () => {
+  const { items, updateItem, deleteItem } = useTableData();
 
-const TableComponent = ({ data, onEdit, onDelete }: Props) => {
   const [selectedItem, setSelectedItem] = useState<Item | null>(null);
 
   const onSave = (item: Item) => {
-    onEdit(item);
+    updateItem(item);
     setSelectedItem(null);
+  };
+
+  const handleEdit = (e: React.MouseEvent<HTMLButtonElement>, item: Item) => {
+    e.currentTarget.blur();
+    setSelectedItem(item);
+  };
+
+  const onDelete = (
+    e: React.MouseEvent<HTMLButtonElement>,
+    id: number | string
+  ) => {
+    e.currentTarget.blur();
+
+    deleteItem(id);
   };
 
   return (
     <>
-      <DataTable value={data} responsiveLayout="scroll">
+      <DataTable
+        value={items}
+        dataKey="id"
+        className="overflow-hidden rounded-lg "
+      >
         <Column
           field="n"
           header="Name"
@@ -38,27 +53,28 @@ const TableComponent = ({ data, onEdit, onDelete }: Props) => {
         <Column
           header="Actions"
           body={(rowData: Item) => (
-            <div className="flex gap-2">
+            <div className="flex justify-end gap-2">
               <Button
                 icon="pi pi-pencil"
-                className="p-button-text p-button-sm"
+                className="p-button-text p-button-sm "
                 tooltip="Edit"
                 tooltipOptions={{ position: "top" }}
-                onClick={() => setSelectedItem(rowData)}
+                onClick={(e) => handleEdit(e, rowData)}
               />
               <Button
                 icon="pi pi-trash"
                 className="p-button-text p-button-sm p-button-danger"
                 tooltip="Delete"
                 tooltipOptions={{ position: "top" }}
-                onClick={() => onDelete(rowData.id)}
+                onClick={(e) => onDelete(e, rowData.id)}
               />
             </div>
           )}
+          headerClassName="flex justify-end !pr-[30px]"
         />
       </DataTable>
 
-      <EditModal
+      <Modal
         visible={!!selectedItem}
         onRequestClose={() => setSelectedItem(null)}
         item={selectedItem}
@@ -69,4 +85,4 @@ const TableComponent = ({ data, onEdit, onDelete }: Props) => {
   );
 };
 
-export default TableComponent;
+export default Table;
