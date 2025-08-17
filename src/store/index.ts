@@ -5,13 +5,11 @@ import {
   type TypedUseSelectorHook,
 } from "react-redux";
 
-import tableDataReducer from "./tableData/tableDataSlice";
 import { tableDataApi } from "../api";
 
 export const store = configureStore({
   reducer: {
     [tableDataApi.reducerPath]: tableDataApi.reducer,
-    tableData: tableDataReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(tableDataApi.middleware),

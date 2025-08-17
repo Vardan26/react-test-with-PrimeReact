@@ -30,7 +30,10 @@ const Modal = ({ visible, onRequestClose, item, onSave, options }: Props) => {
       modal
       className="w-[500px] max-w-[90vw]"
     >
-      <form onSubmit={submitHandler} className="p-fluid gap-5 flex flex-col">
+      <form
+        onSubmit={submitHandler}
+        className="p-fluid gap-3 sm:gap-5 flex flex-col"
+      >
         <div className="p-field">
           <label htmlFor="n">Name</label>
           <Controller
@@ -64,7 +67,9 @@ const Modal = ({ visible, onRequestClose, item, onSave, options }: Props) => {
                   {...field}
                   options={options}
                   display="chip"
-                  className={fieldState.invalid ? "p-invalid" : ""}
+                  className={
+                    fieldState.invalid ? "p-invalid" : "text-xs sm:text-base"
+                  }
                 />
                 {fieldState.error && (
                   <small className="p-error">{fieldState.error.message}</small>

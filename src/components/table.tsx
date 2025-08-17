@@ -5,15 +5,22 @@ import { Button } from "primereact/button";
 
 import type { Item } from "../types";
 import Modal from "./modal";
-import { useTableData } from "../hooks/tableData";
+import {
+  useDeleteItemMutation,
+  useGetItemsQuery,
+  useUpdateItemMutation,
+} from "../api";
 
 const Table = () => {
-  const { items, updateItem, deleteItem } = useTableData();
+  const { data } = useGetItemsQuery();
+
+  const [updateItemMutation] = useUpdateItemMutation();
+  const [deleteItemMutation] = useDeleteItemMutation();
 
   const [selectedItem, setSelectedItem] = useState<Item | null>(null);
 
   const onSave = (item: Item) => {
-    updateItem(item);
+    updateItemMutation(item);
     setSelectedItem(null);
   };
 
@@ -28,13 +35,13 @@ const Table = () => {
   ) => {
     e.currentTarget.blur();
 
-    deleteItem(id);
+    deleteItemMutation(id);
   };
 
   return (
     <>
       <DataTable
-        value={items}
+        value={data}
         dataKey="id"
         className="overflow-hidden rounded-lg "
       >
@@ -42,18 +49,26 @@ const Table = () => {
           field="n"
           header="Name"
           sortable
-          body={(rowData: Item) => <span>{rowData.n}</span>}
+          body={(rowData: Item) => (
+            <span className="text-xs sm:text-base ">{rowData.n}</span>
+          )}
+          headerClassName="text-xs sm:text-base"
         />
         <Column
           field="c"
           header="Category"
           sortable
-          body={(rowData: Item) => <span>{rowData.c?.join(", ")}</span>}
+          body={(rowData: Item) => (
+            <span className="text-xs sm:text-base">
+              {rowData.c?.join(", ")}
+            </span>
+          )}
+          headerClassName="text-xs sm:text-base"
         />
         <Column
           header="Actions"
           body={(rowData: Item) => (
-            <div className="flex justify-end gap-2">
+            <div className="flex justify-end gap-1 sm:gap-2">
               <Button
                 icon="pi pi-pencil"
                 className="p-button-text p-button-sm "
@@ -70,7 +85,7 @@ const Table = () => {
               />
             </div>
           )}
-          headerClassName="flex justify-end !pr-[30px]"
+          headerClassName="flex justify-end !pr-[30px] text-xs sm:text-base"
         />
       </DataTable>
 

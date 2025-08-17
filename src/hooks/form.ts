@@ -1,5 +1,5 @@
-import { useForm, Controller, useWatch } from "react-hook-form";
-import { useEffect, useMemo } from "react";
+import { useForm } from "react-hook-form";
+import { useEffect } from "react";
 import type { Item } from "../types";
 
 type Props = {
@@ -18,14 +18,11 @@ export const useEditForm = ({ selectedItem, onSave }: Props) => {
     control,
     handleSubmit,
     reset,
-    getValues,
-    formState: { isValid },
+    formState: { isValid, isDirty },
   } = useForm<Item>({
     defaultValues: selectedItem || defaultValues,
     mode: "onChange",
   });
-
-  const watchedValues = useWatch({ control });
 
   useEffect(() => {
     if (selectedItem) {
@@ -37,16 +34,5 @@ export const useEditForm = ({ selectedItem, onSave }: Props) => {
     onSave(data);
   });
 
-  const isChanged = useMemo(() => {
-    if (!selectedItem) return false;
-
-    const current = getValues();
-
-    return (
-      current.n !== selectedItem.n ||
-      JSON.stringify(current.c) !== JSON.stringify(selectedItem.c)
-    );
-  }, [getValues, selectedItem, watchedValues]);
-
-  return { control, submitHandler, reset, isChanged, isValid };
+  return { control, submitHandler, reset, isChanged: isDirty, isValid };
 };

@@ -1,9 +1,9 @@
+import { useGetItemsQuery } from "../api";
 import Table from "../components/table";
-import { useTableData } from "../hooks/tableData";
 import AppLayout from "./AppLayout";
 
 export const App = () => {
-  const { isLoading } = useTableData();
+  const { isLoading } = useGetItemsQuery();
 
   return (
     <AppLayout loading={isLoading}>
