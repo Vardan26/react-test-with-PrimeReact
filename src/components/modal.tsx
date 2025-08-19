@@ -35,9 +35,9 @@ const Modal = ({ visible, onRequestClose, item, onSave, options }: Props) => {
         className="p-fluid gap-3 sm:gap-5 flex flex-col"
       >
         <div className="p-field">
-          <label htmlFor="n">Name</label>
+          <label htmlFor="name">Name</label>
           <Controller
-            name="n"
+            name="name"
             control={control}
             rules={{ required: "Name is required" }}
             render={({ field, fieldState }) => (
@@ -56,9 +56,9 @@ const Modal = ({ visible, onRequestClose, item, onSave, options }: Props) => {
         </div>
 
         <div className="p-field">
-          <label htmlFor="c">Category</label>
+          <label htmlFor="category">Category</label>
           <Controller
-            name="c"
+            name="category"
             control={control}
             rules={{ required: "Category is required" }}
             render={({ field, fieldState }) => (

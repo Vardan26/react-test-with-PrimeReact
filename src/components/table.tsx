@@ -3,7 +3,7 @@ import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Button } from "primereact/button";
 
-import type { Item } from "../types";
+import type { IdType, Item } from "../types";
 import Modal from "./modal";
 import {
   useDeleteItemMutation,
@@ -29,10 +29,7 @@ const Table = () => {
     setSelectedItem(item);
   };
 
-  const onDelete = (
-    e: React.MouseEvent<HTMLButtonElement>,
-    id: number | string
-  ) => {
+  const onDelete = (e: React.MouseEvent<HTMLButtonElement>, id: IdType) => {
     e.currentTarget.blur();
 
     deleteItemMutation(id);
@@ -50,17 +47,17 @@ const Table = () => {
           header="Name"
           sortable
           body={(rowData: Item) => (
-            <span className="text-xs sm:text-base ">{rowData.n}</span>
+            <span className="text-xs sm:text-base ">{rowData.name}</span>
           )}
           headerClassName="text-xs sm:text-base"
         />
         <Column
-          field="c"
+          field="category"
           header="Category"
           sortable
           body={(rowData: Item) => (
             <span className="text-xs sm:text-base">
-              {rowData.c?.join(", ")}
+              {rowData.category?.join(", ")}
             </span>
           )}
           headerClassName="text-xs sm:text-base"
@@ -94,7 +91,7 @@ const Table = () => {
         onRequestClose={() => setSelectedItem(null)}
         item={selectedItem}
         onSave={onSave}
-        options={selectedItem?.c || []}
+        options={selectedItem?.category || []}
       />
     </>
   );

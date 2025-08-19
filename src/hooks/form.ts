@@ -9,8 +9,8 @@ type Props = {
 
 const defaultValues: Item = {
   id: 0,
-  n: "",
-  c: [],
+  name: "",
+  category: [],
 };
 
 export const useEditForm = ({ selectedItem, onSave }: Props) => {

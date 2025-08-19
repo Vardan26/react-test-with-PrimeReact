@@ -1,9 +1,10 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import dataJson from "../data.json";
-import type { Item } from "../types";
+import type { IdType, Item, RawItem } from "../types";
 import { API_TAGS } from "./tags";
+import { normalizeItem } from "./dataNormalizer";
 
-let localData: Item[] = [...dataJson];
+let localData: Item[] = (dataJson as RawItem[]).map(normalizeItem);
 
 export const tableDataApi = createApi({
   reducerPath: "tableDataApi",
@@ -20,7 +21,7 @@ export const tableDataApi = createApi({
         return { data: localData.find((item) => item.id === id) };
       }
       case "DELETE": {
-        const id = body as number | string;
+        const id = body as IdType;
         localData = localData.filter((item) => item.id !== id);
         return { data: { success: true, id } };
       }
@@ -34,13 +35,10 @@ export const tableDataApi = createApi({
       providesTags: [API_TAGS.ITEMS],
     }),
     updateItem: builder.mutation<Item, Partial<Item> & Pick<Item, "id">>({
-      query: (patch) => ({ url: "/", method: "PUT", body: patch }),
+      query: (body) => ({ url: "/", method: "PUT", body }),
       invalidatesTags: [API_TAGS.ITEMS],
     }),
-    deleteItem: builder.mutation<
-      { success: boolean; id: number | string },
-      number | string
-    >({
+    deleteItem: builder.mutation<{ success: boolean; id: IdType }, IdType>({
       query: (id) => ({ url: "/", method: "DELETE", body: id }),
       invalidatesTags: [API_TAGS.ITEMS],
     }),
