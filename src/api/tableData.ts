@@ -11,8 +11,6 @@ export const tableDataApi = createApi({
   tagTypes: [API_TAGS.ITEMS],
   baseQuery: async ({ method, body }) => {
     switch (method) {
-      case "GET":
-        return { data: localData };
       case "PUT": {
         const { id, ...patch } = body as Partial<Item> & Pick<Item, "id">;
         localData = localData.map((item) =>
@@ -26,12 +24,12 @@ export const tableDataApi = createApi({
         return { data: { success: true, id } };
       }
       default:
-        return { error: { status: 405 } };
+        return { data: localData };
     }
   },
   endpoints: (builder) => ({
     getItems: builder.query<Item[], void>({
-      query: () => ({ url: "/", method: "GET" }),
+      query: () => ({ url: "/" }),
       providesTags: [API_TAGS.ITEMS],
     }),
     updateItem: builder.mutation<Item, Partial<Item> & Pick<Item, "id">>({
